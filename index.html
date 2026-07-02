@@ -434,7 +434,18 @@
     }
 
 
-#undoBtn{background:linear-gradient(135deg,#f59e0b,#d97706);}
+#undoBtn{
+background:linear-gradient(135deg,#06b6d4,#2563eb,#7c3aed);
+color:#ffffff;
+font-weight:900;
+box-shadow:0 0 15px rgba(37,99,235,.55);
+border:1px solid rgba(255,255,255,.25);
+animation:undoGlow 1.8s infinite alternate;
+}
+@keyframes undoGlow{
+0%{transform:translateY(0);box-shadow:0 0 10px rgba(37,99,235,.45);}
+100%{transform:translateY(-2px);box-shadow:0 0 22px rgba(124,58,237,.85);}
+}
 #resetBtn{background:linear-gradient(135deg,#ef4444,#b91c1c);}
 #zoomIn,#zoomOut{background:linear-gradient(135deg,#06b6d4,#2563eb);}
 #saveJson{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:white;}
@@ -455,6 +466,19 @@ box-shadow:0 0 20px rgba(34,197,94,.5);
 #deleteLayer{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;}
 #centerAllText{background:linear-gradient(135deg,#06b6d4,#0284c7);color:#fff;}
 #equalLineSpacing{background:linear-gradient(135deg,#ec4899,#be185d);color:#fff;}
+
+#undoLayerBtn{
+background:linear-gradient(135deg,#06b6d4,#2563eb,#7c3aed);
+color:#fff;
+font-weight:800;
+box-shadow:0 0 12px rgba(37,99,235,.45);
+border:1px solid rgba(255,255,255,.25);
+}
+#undoLayerBtn:hover{
+transform:translateY(-2px);
+box-shadow:0 0 18px rgba(124,58,237,.8);
+}
+
 
 
 
@@ -560,6 +584,7 @@ box-shadow:0 0 20px rgba(34,197,94,.5);
         <div class="layer-actions">
           <button class="btn" id="addLayer">+ Thêm dòng</button>
           <button class="btn" id="deleteLayer">Xóa dòng đang chọn</button>
+          <button class="btn" id="undoLayerBtn">↶ Undo</button>
           <button class="btn" id="centerAllText">Căn giữa maket</button>
           <button class="btn" id="equalLineSpacing">Giãn dòng đều</button>
         </div>
@@ -1241,6 +1266,10 @@ fetch("https://api.ipify.org?format=json")
     });
 
     document.getElementById('undoBtn').addEventListener('click', () => {
+      undoLast();
+    });
+
+    document.getElementById('undoLayerBtn').addEventListener('click', () => {
       undoLast();
     });
 
