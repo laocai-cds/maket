@@ -511,6 +511,43 @@ box-shadow:0 0 18px rgba(124,58,237,.8);
     100%{transform:translateY(0px);}
 }
 
+
+.author{
+    background: linear-gradient(135deg,#0b0b0b,#151515,#1e1e1e);
+    border:2px solid #00ffff;
+    border-radius:15px;
+    padding:14px;
+    margin-bottom:14px;
+    text-align:center;
+    overflow:hidden;
+    font-size:13px;
+    font-weight:700;
+    line-height:1.8;
+    background-size:200% 200%;
+    animation:borderGlow 2s infinite alternate,bgMove 8s linear infinite;
+    box-shadow:0 0 10px rgba(0,255,255,.4),0 0 25px rgba(0,255,255,.3),inset 0 0 20px rgba(255,255,255,.05);
+    color:#ffd700;
+    text-shadow:0 0 5px rgba(255,215,0,.7),0 0 10px rgba(255,215,0,.5),0 0 20px rgba(255,215,0,.3);
+}
+.author strong{
+    display:block;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:1px;
+    background:linear-gradient(90deg,#ff0000,#ff8800,#ffff00,#00ffff,#ff00ff,#ff0000);
+    background-size:400% 100%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:rainbowText 6s linear infinite,textGlow 1.5s infinite alternate;
+}
+@keyframes borderGlow{
+from{border-color:#00ffff;box-shadow:0 0 10px #00ffff,0 0 20px #00ffff;}
+to{border-color:#ff00ff;box-shadow:0 0 15px #ff00ff,0 0 35px #ff00ff;}
+}
+@keyframes rainbowText{0%{background-position:0% 50%;}100%{background-position:400% 50%;}}
+@keyframes textGlow{from{filter:drop-shadow(0 0 5px #ff0000);}to{filter:drop-shadow(0 0 18px #00ffff);}}
+@keyframes bgMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+
 </style>
 
 <style>
