@@ -3,18 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tool chỉnh sửa Maket</title>
+  <title>Chỉnh sửa Maket</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
-      --ink: #202124;
+      --ink: #101828;
+      --ink-2: #344054;
       --muted: #667085;
-      --line: #d9dde5;
+      --line: #e4e7ec;
+      --line-strong: #d0d5dd;
       --panel: #ffffff;
-      --soft: #f4f6f8;
-      --accent: #b31b24;
-      --accent-2: #1f7a5c;
-      --shadow: 0 12px 36px rgba(16, 24, 40, .12);
+      --soft: #f9fafb;
+      --canvas-bg: #eef1f5;
+      --accent: #a8161f;
+      --accent-hover: #8c1219;
+      --accent-soft: #fdf1f1;
+      --focus: rgba(168, 22, 31, .18);
+      --danger: #b42318;
+      --success: #067647;
+      --radius: 8px;
+      --shadow-sm: 0 1px 2px rgba(16, 24, 40, .06);
+      --shadow: 0 20px 48px -12px rgba(16, 24, 40, .22);
     }
 
     * {
@@ -24,11 +36,13 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: "Be Vietnam Pro", "Segoe UI", Arial, Helvetica, sans-serif;
+      font-size: 14px;
       color: var(--ink);
-      background: #edf0f4;
+      background: var(--canvas-bg);
       display: grid;
-      grid-template-columns: 360px minmax(0, 1fr);
+      grid-template-columns: 340px minmax(0, 1fr);
+      -webkit-font-smoothing: antialiased;
     }
 
     button,
@@ -38,85 +52,127 @@
       font: inherit;
     }
 
+    /* ---------- Sidebar ---------- */
+
     .sidebar {
       height: 100vh;
       overflow: auto;
       background: var(--panel);
       border-right: 1px solid var(--line);
-      padding: 16px;
+      display: flex;
+      flex-direction: column;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 12px;
-      margin-bottom: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      background: var(--panel);
+      z-index: 2;
+    }
+
+    .brand-logo {
+      flex: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #ffd84d;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: .02em;
+    }
+
+    .brand-text {
+      flex: 1;
+      min-width: 0;
     }
 
     h1 {
       margin: 0;
-      font-size: 18px;
+      font-size: 16px;
+      font-weight: 700;
       line-height: 1.25;
     }
 
-    .hint {
+    .version {
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.45;
-      margin: 0 0 14px;
     }
 
-    .author{
-    background: linear-gradient(135deg,#111111,#1a1a1a);
-    border:1px solid #7a5c00;
-    border-radius:8px;
-    padding:12px;
-    margin-bottom:14px;
-    color:#FFD966 !important;
-    font-size:12px;
-    line-height:1.5;
-    box-shadow:0 0 15px rgba(255,215,0,.20);
-}
+    .brand-actions {
+      display: flex;
+      gap: 6px;
+    }
 
-.author strong{
-    display:block;
-    color:#FFD700 !important;
-    font-size:14px !important;
-    font-weight:700 !important;
-    text-shadow:
-        0 0 4px rgba(255,215,0,.7),
-        0 0 10px rgba(255,215,0,.5);
-}
+    .sidebar-body {
+      padding: 16px 20px 20px;
+      display: grid;
+      gap: 16px;
+      flex: 1;
+      align-content: start;
+    }
+
+    .hint {
+      margin: 0;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      background: var(--soft);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    kbd {
+      font-family: inherit;
+      font-size: 11px;
+      padding: 1px 5px;
+      border: 1px solid var(--line-strong);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink-2);
+    }
 
     .tools,
-    .layer-list,
-    .editor {
+    .layer-list {
       display: grid;
-      gap: 10px;
+      gap: 16px;
+    }
+
+    .layer-list {
+      gap: 6px;
     }
 
     .group {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 12px;
       display: grid;
-      gap: 10px;
-      background: #fff;
+      gap: 12px;
+    }
+
+    .group + .group {
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
     }
 
     .group-title {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: .04em;
-      font-weight: 700;
+      letter-spacing: .08em;
+      font-weight: 600;
     }
 
     .row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 10px;
     }
 
     .layer-actions {
@@ -127,96 +183,193 @@
 
     label {
       display: grid;
-      gap: 5px;
-      color: #475467;
+      gap: 6px;
+      color: var(--ink-2);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 500;
+    }
+
+    .label-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .label-line output {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      font-weight: 400;
     }
 
     input,
     select,
     textarea {
       width: 100%;
-      border: 1px solid #cfd5df;
+      border: 1px solid var(--line-strong);
       border-radius: 6px;
-      padding: 8px 9px;
+      padding: 8px 10px;
       background: #fff;
       color: var(--ink);
       outline: none;
+      box-shadow: var(--shadow-sm);
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--focus);
     }
 
     textarea {
-      min-height: 72px;
+      min-height: 76px;
       resize: vertical;
-      line-height: 1.35;
+      line-height: 1.45;
     }
 
     input[type="color"] {
       height: 38px;
       padding: 3px;
+      cursor: pointer;
     }
 
     input[type="range"] {
       padding: 0;
+      border: 0;
+      box-shadow: none;
+      accent-color: var(--accent);
+      cursor: pointer;
     }
 
+    input[type="range"]:focus {
+      box-shadow: none;
+    }
+
+    /* ---------- Buttons ---------- */
+
     .btn {
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: 8px;
-      padding: 9px 10px;
-      background: linear-gradient(135deg,#f8fafc,#e2e8f0);
-      color: #1e293b;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      background: #fff;
+      color: var(--ink-2);
       cursor: pointer;
-      font-weight: 700;
+      font-weight: 600;
+      font-size: 13px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      min-height: 38px;
+      gap: 6px;
+      min-height: 36px;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+      transition: background .15s, border-color .15s, color .15s, box-shadow .15s;
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 12px rgba(0,255,255,.5);
-      filter: brightness(1.15);
+      background: var(--soft);
+      border-color: #98a2b3;
+      color: var(--ink);
+    }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--focus);
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: progress;
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex: none;
     }
 
     .btn.primary {
-      background: linear-gradient(135deg,#ef4444,#b91c1c);
-      border-color: #ef4444;
+      background: var(--accent);
+      border-color: var(--accent);
       color: #fff;
     }
 
-    .btn.good {
-      background: linear-gradient(135deg,#22c55e,#15803d);
-      border-color: #22c55e;
-      color: #fff;
-      box-shadow: 0 0 15px rgba(34,197,94,.45);
+    .btn.primary:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn.danger {
+      color: var(--danger);
+    }
+
+    .btn.danger:hover {
+      background: #fef3f2;
+      border-color: #fda29b;
     }
 
     .btn.icon {
-      width: 38px;
+      width: 36px;
       padding: 0;
-      font-size: 18px;
     }
+
+    .btn.full {
+      grid-column: 1 / -1;
+    }
+
+    /* ---------- Layer list ---------- */
 
     .layer-item {
       border: 1px solid var(--line);
-      border-radius: 6px;
-      padding: 9px;
+      border-radius: var(--radius);
+      padding: 8px 10px;
       background: #fff;
       cursor: pointer;
       display: grid;
-      gap: 4px;
+      grid-template-columns: 24px minmax(0, 1fr);
+      column-gap: 10px;
+      row-gap: 2px;
+      align-items: center;
+      text-align: left;
+      color: var(--ink);
+      transition: border-color .15s, background .15s;
+    }
+
+    .layer-item:hover {
+      border-color: var(--line-strong);
+      background: var(--soft);
     }
 
     .layer-item.active {
       border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(179, 27, 36, .12);
+      background: var(--accent-soft);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .layer-index {
+      grid-row: span 2;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      display: grid;
+      place-items: center;
+    }
+
+    .layer-item.active .layer-index {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
     }
 
     .layer-name {
-      font-weight: 700;
+      font-weight: 600;
+      font-size: 13px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -224,8 +377,56 @@
 
     .layer-meta {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
     }
+
+    /* ---------- Segmented ---------- */
+
+    .segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 3px;
+      gap: 3px;
+      border-radius: var(--radius);
+      background: #f2f4f7;
+      border: 1px solid var(--line);
+    }
+
+    .segmented .btn {
+      border-color: transparent;
+      background: transparent;
+      box-shadow: none;
+      min-height: 30px;
+      color: var(--muted);
+    }
+
+    .segmented .btn.active {
+      background: #fff;
+      color: var(--ink);
+      border-color: var(--line);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ---------- Author ---------- */
+
+    .author {
+      margin-top: auto;
+      padding: 14px 20px;
+      border-top: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .author strong {
+      display: block;
+      color: var(--ink-2);
+      font-weight: 600;
+    }
+
+    /* ---------- Stage ---------- */
 
     .stage-wrap {
       min-width: 0;
@@ -235,13 +436,13 @@
     }
 
     .topbar {
-      min-height: 58px;
+      min-height: 64px;
       background: #fff;
       border-bottom: 1px solid var(--line);
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 14px;
+      padding: 12px 20px;
       flex-wrap: wrap;
     }
 
@@ -249,69 +450,73 @@
       flex: 1;
     }
 
+    .zoom-control {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .zoom-control .btn {
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      min-height: 34px;
+    }
+
+    .zoom-label {
+      min-width: 58px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink-2);
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      line-height: 34px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .divider {
+      width: 1px;
+      height: 24px;
+      background: var(--line);
+    }
+
     .status {
       color: var(--muted);
       font-size: 12px;
-      min-width: 130px;
-    }
-
-    .welcome-runner {
-      width: 420px;
+      max-width: 340px;
       overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .welcome-text {
+    .status:not(:empty)::before {
+      content: "";
       display: inline-block;
-      color: #ff0000;
-      font-size: 14px;
-      font-weight: 700;
-      white-space: nowrap;
-      animation: welcomeMarquee 25s linear infinite, welcomeColorBlink 2s steps(1, end) infinite;
-    }
-
-    @keyframes welcomeMarquee {
-      from {
-        transform: translateX(-100%);
-      }
-
-      to {
-        transform: translateX(420px);
-      }
-    }
-
-    @keyframes welcomeColorBlink {
-      0% {
-        color: #ff0000;
-      }
-
-      20% {
-        color: #ffcc00;
-      }
-
-      40% {
-        color: #00a651;
-      }
-
-      60% {
-        color: #0077ff;
-      }
-
-      80% {
-        color: #ff00cc;
-      }
-
-      100% {
-        color: #ff0000;
-      }
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      margin-right: 6px;
+      vertical-align: middle;
     }
 
     .download-link {
       display: none;
-      color: var(--accent-2);
+      color: var(--success);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       text-decoration: none;
+    }
+
+    .download-link:hover {
+      text-decoration: underline;
     }
 
     .download-link.visible {
@@ -323,22 +528,19 @@
       min-width: 0;
       min-height: 0;
       overflow: auto;
-      padding: 22px;
+      padding: 32px;
       display: grid;
       place-items: center;
-      background:
-        linear-gradient(45deg, rgba(0,0,0,.035) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(0,0,0,.035) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(0,0,0,.035) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(0,0,0,.035) 75%);
-      background-size: 26px 26px;
-      background-position: 0 0, 0 13px, 13px -13px, -13px 0;
+      background-color: var(--canvas-bg);
+      background-image: radial-gradient(rgba(16, 24, 40, .09) 1px, transparent 1px);
+      background-size: 20px 20px;
     }
 
     canvas {
       width: min(100%, 1180px);
       height: auto;
       background: #aa1b24;
+      border-radius: 2px;
       box-shadow: var(--shadow);
       cursor: grab;
     }
@@ -362,32 +564,20 @@
       border-radius: 4px;
       background: rgba(0, 0, 0, .08);
       color: inherit;
-      outline: 2px solid rgba(179, 27, 36, .55);
+      outline: 2px solid rgba(168, 22, 31, .55);
       outline-offset: 2px;
       resize: none;
       overflow: hidden;
       box-shadow: 0 0 0 2px rgba(0, 0, 0, .18);
     }
 
+    .inline-text-editor:focus {
+      border-color: rgba(255, 255, 255, .95);
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, .18);
+    }
+
     .inline-text-editor.visible {
       display: block;
-    }
-
-    .mini {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .segmented {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-    }
-
-    .segmented .btn.active {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: #fff4f4;
     }
 
     @media (max-width: 920px) {
@@ -397,348 +587,199 @@
 
       .sidebar {
         height: auto;
-        max-height: none;
         border-right: 0;
         border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        position: static;
       }
 
       .stage-wrap {
         height: auto;
         min-height: 70vh;
       }
-    }
-  
-    .edit-title{
-      color:#5b21b6;
-      font-weight:900;
-      animation: titleBlink 1.2s infinite alternate;
-      text-shadow:
-        0 0 5px #a855f7,
-        0 0 10px #a855f7,
-        0 0 20px #a855f7;
-    }
 
-    @keyframes titleBlink{
-      0%{
-        opacity:0.5;
-        transform:scale(1);
+      .topbar {
+        padding: 10px 16px;
       }
-      100%{
-        opacity:1;
-        transform:scale(1.05);
-        text-shadow:
-          0 0 10px #ff00ff,
-          0 0 20px #ff00ff,
-          0 0 35px #ff00ff;
+
+      .stage {
+        padding: 16px;
+      }
+
+      .divider,
+      .topbar .spacer {
+        display: none;
       }
     }
-
-
-#undoBtn{
-background:linear-gradient(135deg,#06b6d4,#2563eb,#7c3aed);
-color:#ffffff;
-font-weight:900;
-box-shadow:0 0 15px rgba(37,99,235,.55);
-border:1px solid rgba(255,255,255,.25);
-animation:undoGlow 1.8s infinite alternate;
-}
-@keyframes undoGlow{
-0%{transform:translateY(0);box-shadow:0 0 10px rgba(37,99,235,.45);}
-100%{transform:translateY(-2px);box-shadow:0 0 22px rgba(124,58,237,.85);}
-}
-#resetBtn{background:linear-gradient(135deg,#ef4444,#b91c1c);}
-#zoomIn,#zoomOut{background:linear-gradient(135deg,#06b6d4,#2563eb);}
-#saveJson{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:white;}
-#loadJson{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;}
-#exportPng{
-background:linear-gradient(135deg,#22c55e,#16a34a)!important;
-color:white;
-font-weight:900;
-box-shadow:0 0 20px rgba(34,197,94,.5);
-}
-
-
-#chooseBgImage{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;}
-#clearBgImage{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;}
-#cleanMode{background:linear-gradient(135deg,#14b8a6,#0f766e);color:#fff;}
-#refMode{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;}
-#addLayer{background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;}
-#deleteLayer{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;}
-#centerAllText{background:linear-gradient(135deg,#06b6d4,#0284c7);color:#fff;}
-#equalLineSpacing{background:linear-gradient(135deg,#ec4899,#be185d);color:#fff;}
-
-#undoLayerBtn{
-background:linear-gradient(135deg,#06b6d4,#2563eb,#7c3aed);
-color:#fff;
-font-weight:800;
-box-shadow:0 0 12px rgba(37,99,235,.45);
-border:1px solid rgba(255,255,255,.25);
-}
-#undoLayerBtn:hover{
-transform:translateY(-2px);
-box-shadow:0 0 18px rgba(124,58,237,.8);
-}
-
-
-
-
-
-.author{
-    background: linear-gradient(135deg,#111111,#1a1a1a);
-    border:1px solid #7a5c00;
-    border-radius:8px;
-    padding:12px;
-    margin-bottom:14px;
-    color:#FFD966 !important;
-    font-size:12px;
-    line-height:1.5;
-    box-shadow:0 0 15px rgba(255,215,0,.20);
-}
-
-.author strong{
-    display:block;
-    color:#FFD700 !important;
-    font-size:14px !important;
-    font-weight:700 !important;
-    text-shadow:
-        0 0 4px rgba(255,215,0,.7),
-        0 0 10px rgba(255,215,0,.5);
-}
-50%{transform:translateY(-2px);}
-    100%{transform:translateY(0px);}
-}
-50%{transform:translateY(-3px);}
-    100%{transform:translateY(0px);}
-}
-
-
-.author{
-    background: linear-gradient(135deg,#0b0b0b,#151515,#1e1e1e);
-    border:2px solid #00ffff;
-    border-radius:15px;
-    padding:14px;
-    margin-bottom:14px;
-    text-align:center;
-    overflow:hidden;
-    font-size:13px;
-    font-weight:700;
-    line-height:1.8;
-    background-size:200% 200%;
-    animation:borderGlow 2s infinite alternate,bgMove 8s linear infinite;
-    box-shadow:0 0 10px rgba(0,255,255,.4),0 0 25px rgba(0,255,255,.3),inset 0 0 20px rgba(255,255,255,.05);
-    color:#ffd700;
-    text-shadow:0 0 5px rgba(255,215,0,.7),0 0 10px rgba(255,215,0,.5),0 0 20px rgba(255,215,0,.3);
-}
-.author strong{
-    display:block;
-    font-size:18px;
-    font-weight:900;
-    letter-spacing:1px;
-    background:linear-gradient(90deg,#ff0000,#ff8800,#ffff00,#00ffff,#ff00ff,#ff0000);
-    background-size:400% 100%;
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    animation:rainbowText 6s linear infinite,textGlow 1.5s infinite alternate;
-}
-@keyframes borderGlow{
-from{border-color:#00ffff;box-shadow:0 0 10px #00ffff,0 0 20px #00ffff;}
-to{border-color:#ff00ff;box-shadow:0 0 15px #ff00ff,0 0 35px #ff00ff;}
-}
-@keyframes rainbowText{0%{background-position:0% 50%;}100%{background-position:400% 50%;}}
-@keyframes textGlow{from{filter:drop-shadow(0 0 5px #ff0000);}to{filter:drop-shadow(0 0 18px #00ffff);}}
-@keyframes bgMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-
-</style>
-
-<style>
-#saveJson,#loadJson,#exportPng,#ipDisplay{
-    height:30px !important;
-    min-height:30px !important;
-    padding:4px 10px !important;
-    font-size:11px !important;
-    border-radius:8px !important;
-}
-#saveJson{min-width:88px !important;}
-#loadJson{min-width:80px !important;}
-#exportPng{min-width:82px !important;}
-#ipDisplay{
-    min-width:130px !important;
-    margin-left:6px !important;
-}
-</style>
-
+  </style>
 </head>
 <body>
   <aside class="sidebar">
     <div class="brand">
-      <h1 class="edit-title">EDIT MAKET V2.1.2026</h1>
-      <div style="display:flex;gap:6px"><button class="btn icon" id="undoBtn" title="Hoàn tác">↶</button><button class="btn icon" id="resetBtn" title="Khôi phục mẫu">↺</button></div>
+      <div class="brand-logo" aria-hidden="true">M</div>
+      <div class="brand-text">
+        <h1>Chỉnh sửa Maket</h1>
+        <div class="version">Phiên bản 2.1 · 2026</div>
+      </div>
+      <div class="brand-actions">
+        <button class="btn icon" id="undoBtn" title="Hoàn tác (Ctrl+Z)" aria-label="Hoàn tác">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+        </button>
+        <button class="btn icon" id="resetBtn" title="Khôi phục mẫu ban đầu" aria-label="Khôi phục mẫu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+        </button>
+      </div>
     </div>
-    <p class="hint"></i>Chọn một dòng chữ để sửa trực tiếp hoặc gõ vào ô văn bản. Có thể kéo trực tiếp trên maket để đổi vị trí, Ctrl +Z để quay lại các bước sửa. Cuối cùng xuất PNG khi hoàn tất.</p>
+
+    <div class="sidebar-body">
+      <p class="hint">Chọn một dòng chữ để chỉnh sửa, nhấp đúp để sửa trực tiếp trên maket. Kéo thả để đổi vị trí, kéo vùng trống để chọn nhiều dòng. Nhấn <kbd>Ctrl</kbd> + <kbd>Z</kbd> để hoàn tác, xuất PNG khi hoàn tất.</p>
+
+      <div class="tools">
+        <section class="group">
+          <div class="group-title">Nền maket</div>
+          <label>
+            Màu nền
+            <input type="color" id="bgColor" value="#ac1c25">
+          </label>
+          <input type="file" id="bgImageFile" accept="image/*" hidden>
+          <div class="row">
+            <button class="btn" id="chooseBgImage">Chèn ảnh nền</button>
+            <button class="btn danger" id="clearBgImage">Xóa ảnh nền</button>
+          </div>
+          <label>
+            Cách hiển thị ảnh nền
+            <select id="bgImageFit">
+              <option value="cover">Phủ kín</option>
+              <option value="contain">Vừa khung</option>
+              <option value="stretch">Kéo giãn</option>
+            </select>
+          </label>
+          <label>
+            <span class="label-line">Độ đậm ảnh nền <output id="bgImageOpacityValue">100%</output></span>
+            <input type="range" id="bgImageOpacity" min="0" max="100" value="100">
+          </label>
+          <div class="segmented" role="group" aria-label="Chế độ hiển thị">
+            <button class="btn active" id="cleanMode">Nền sạch</button>
+            <button class="btn" id="refMode">Ảnh gốc</button>
+          </div>
+          <label>
+            <span class="label-line">Độ đậm ảnh gốc <output id="refOpacityValue">28%</output></span>
+            <input type="range" id="refOpacity" min="0" max="100" value="28">
+          </label>
+        </section>
+
+        <section class="group">
+          <div class="group-title">Các dòng chữ</div>
+          <div class="layer-list" id="layerList"></div>
+          <div class="layer-actions">
+            <button class="btn primary" id="addLayer">+ Thêm dòng</button>
+            <button class="btn danger" id="deleteLayer">Xóa dòng</button>
+            <button class="btn" id="centerAllText">Căn giữa</button>
+            <button class="btn" id="equalLineSpacing">Giãn đều</button>
+            <button class="btn full" id="undoLayerBtn">Hoàn tác thao tác</button>
+          </div>
+        </section>
+
+        <section class="group editor" id="editor">
+          <div class="group-title">Dòng đang chọn</div>
+          <label>
+            Văn bản
+            <textarea id="textInput"></textarea>
+          </label>
+          <div class="row">
+            <label>
+              Phông chữ
+              <select id="fontInput">
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Arial">Arial</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Tahoma">Tahoma</option>
+              </select>
+            </label>
+            <label>
+              Cỡ chữ
+              <input type="number" id="sizeInput" min="16" max="360" step="1">
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Màu chữ
+              <input type="color" id="colorInput" value="#fff200">
+            </label>
+            <label>
+              Kiểu chữ
+              <select id="styleInput">
+                <option value="bold">Đậm</option>
+                <option value="bold italic">Đậm nghiêng</option>
+                <option value="normal">Thường</option>
+                <option value="italic">Nghiêng</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Vị trí X
+              <input type="number" id="xInput" min="0" max="4679" step="1">
+            </label>
+            <label>
+              Vị trí Y
+              <input type="number" id="yInput" min="0" max="2533" step="1">
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Giãn dòng
+              <input type="number" id="lineHeightInput" min=".7" max="2" step=".05">
+            </label>
+            <label>
+              Căn lề
+              <select id="alignInput">
+                <option value="center">Giữa</option>
+                <option value="left">Trái</option>
+                <option value="right">Phải</option>
+              </select>
+            </label>
+          </div>
+        </section>
+      </div>
+    </div>
+
     <div class="author">
-      <strong>Phát triển bởi: Nguyễn Ngọc Dũng</strong>
-      Phòng CĐS-CY VPTU Lào Cai<br>
-      ĐT: 0826.066.007
-    </div>
-
-    <div class="tools">
-      <div class="group">
-        <div class="group-title">Maket</div>
-        <label>
-          Màu nền
-          <input type="color" id="bgColor" value="#ac1c25">
-        </label>
-        <input type="file" id="bgImageFile" accept="image/*" hidden>
-        <div class="row">
-          <button class="btn" id="chooseBgImage">Chèn ảnh nền</button>
-          <button class="btn" id="clearBgImage">Xóa ảnh nền</button>
-        </div>
-        <label>
-          Cách hiển thị ảnh nền
-          <select id="bgImageFit">
-            <option value="cover">Phủ kín</option>
-            <option value="contain">Vừa khung</option>
-            <option value="stretch">Kéo giãn</option>
-          </select>
-        </label>
-        <label>
-          Độ mờ ảnh nền
-          <input type="range" id="bgImageOpacity" min="0" max="100" value="100">
-        </label>
-        <div class="segmented">
-          <button class="btn active" id="cleanMode">Nền sạch</button>
-          <button class="btn" id="refMode">Ảnh gốc</button>
-        </div>
-        <label>
-          Độ mờ ảnh gốc
-          <input type="range" id="refOpacity" min="0" max="100" value="28">
-        </label>
-      </div>
-
-      <div class="group">
-        <div class="group-title">Các dòng chữ</div>
-        <div class="layer-list" id="layerList"></div>
-        <div class="layer-actions">
-          <button class="btn" id="addLayer">+ Thêm dòng</button>
-          <button class="btn" id="deleteLayer">Xóa dòng đang chọn</button>
-          <button class="btn" id="undoLayerBtn">↶ Undo</button>
-          <button class="btn" id="centerAllText">Căn giữa maket</button>
-          <button class="btn" id="equalLineSpacing">Giãn dòng đều</button>
-        </div>
-      </div>
-
-      <div class="group editor" id="editor">
-        <div class="group-title">Nội dung dòng đang chọn</div>
-        <label>
-          Văn bản
-          <textarea id="textInput"></textarea>
-        </label>
-        <div class="row">
-          <label>
-            Font
-            <select id="fontInput">
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Arial">Arial</option>
-              <option value="Georgia">Georgia</option>
-              <option value="Tahoma">Tahoma</option>
-            </select>
-          </label>
-          <label>
-            Cỡ chữ
-            <input type="number" id="sizeInput" min="16" max="360" step="1">
-          </label>
-        </div>
-        <div class="row">
-          <label>
-            Màu chữ
-            <input type="color" id="colorInput" value="#fff200">
-          </label>
-          <label>
-            Kiểu chữ
-            <select id="styleInput">
-              <option value="bold">Đậm</option>
-              <option value="bold italic">Đậm nghiêng</option>
-              <option value="normal">Thường</option>
-              <option value="italic">Nghiêng</option>
-            </select>
-          </label>
-        </div>
-        <div class="row">
-          <label>
-            X
-            <input type="number" id="xInput" min="0" max="4679" step="1">
-          </label>
-          <label>
-            Y
-            <input type="number" id="yInput" min="0" max="2533" step="1">
-          </label>
-        </div>
-        <div class="row">
-          <label>
-            Giãn dòng
-            <input type="number" id="lineHeightInput" min=".7" max="2" step=".05">
-          </label>
-          <label>
-            Căn chữ
-            <select id="alignInput">
-              <option value="center">Giữa</option>
-              <option value="left">Trái</option>
-              <option value="right">Phải</option>
-            </select>
-          </label>
-        </div>
-      </div>
+      <strong>Phát triển bởi Nguyễn Ngọc Dũng</strong>
+      Phòng CĐS-CY, VPTU Lào Cai · ĐT: 0826.066.007
     </div>
   </aside>
 
   <main class="stage-wrap">
     <div class="topbar">
-      <button class="btn" id="zoomOut" title="Thu nhỏ">−</button>
-      <span class="mini" id="zoomLabel">100%</span>
-      <button class="btn" id="zoomIn" title="Phóng to">+</button>
+      <div class="zoom-control">
+        <button class="btn icon" id="zoomOut" title="Thu nhỏ" aria-label="Thu nhỏ">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+        </button>
+        <span class="zoom-label" id="zoomLabel" title="Nhấp để về 100%">100%</span>
+        <button class="btn icon" id="zoomIn" title="Phóng to" aria-label="Phóng to">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+      <span class="status" id="statusText" role="status"></span>
       <span class="spacer"></span>
-      <span class="welcome-runner"><span class="welcome-text" id="clockWeather">🕒 00:00:00 | 📅 --/--/---- | 🌤 Đang tải thời tiết...</span></span>
-      <button class="btn" id="saveJson">Lưu mẫu JSON</button>
-      <button class="btn" id="loadJson">Mở JSON</button>
+      <a class="download-link" id="downloadPng" href="#" download="maket-hoi-nghi.png">Tải lại PNG vừa tạo</a>
+      <button class="btn" id="loadJson">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Mở mẫu
+      </button>
+      <button class="btn" id="saveJson">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v5h8V3M7 21v-7h10v7"/></svg>
+        Lưu mẫu
+      </button>
       <input type="file" id="jsonFile" accept="application/json" hidden>
-      <button class="btn good" id="exportPng">Xuất PNG</button>
-      
-
-<span id="ipDisplay" style="
-display:inline-flex;
-align-items:center;
-justify-content:center;
-min-width:160px;
-height:38px;
-padding:0 14px;
-margin-left:8px;
-border-radius:12px;
-font-size:13px;
-font-weight:900;
-color:#ffffff;
-background:linear-gradient(135deg,#0ea5e9,#2563eb,#7c3aed);
-box-shadow:0 0 12px rgba(37,99,235,.45);
-border:1px solid rgba(255,255,255,.25);
-">
-🌐 IP: Đang tải...
-</span>
-
-<script>
-fetch("https://api.ipify.org?format=json")
-.then(r => r.json())
-.then(data => {
-    document.getElementById("ipDisplay").innerHTML =
-        "🌐 IP: " + data.ip;
-})
-.catch(() => {
-    document.getElementById("ipDisplay").innerHTML =
-        "🌐 IP: Không xác định";
-});
-</script>
-
-
-      <a class="download-link" id="downloadPng" href="#" download="maket-hoi-nghi.png">Tải PNG vừa tạo</a>
-      <span class="status" id="statusText"></span>
+      <span class="divider"></span>
+      <button class="btn primary" id="exportPng">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+        Xuất PNG
+      </button>
     </div>
     <div class="stage">
       <canvas id="canvas" width="4679" height="2533"></canvas>
@@ -786,7 +827,11 @@ fetch("https://api.ipify.org?format=json")
     }
 
     function undoLast() {
-      if (!historyStack.length) return;
+      if (!historyStack.length) {
+        setStatus('Không còn thao tác để hoàn tác.');
+        return;
+      }
+      closeInlineEditor();
       isUndoing = true;
       state = JSON.parse(historyStack.pop());
       selected = Math.min(selected, state.layers.length - 1);
@@ -795,6 +840,7 @@ fetch("https://api.ipify.org?format=json")
       syncControls();
       render();
       isUndoing = false;
+      setStatus('Đã hoàn tác.');
     }
 
     let dragOffset = { x: 0, y: 0 };
@@ -810,6 +856,8 @@ fetch("https://api.ipify.org?format=json")
       cleanMode: document.getElementById('cleanMode'),
       refMode: document.getElementById('refMode'),
       refOpacity: document.getElementById('refOpacity'),
+      bgImageOpacityValue: document.getElementById('bgImageOpacityValue'),
+      refOpacityValue: document.getElementById('refOpacityValue'),
       text: document.getElementById('textInput'),
       font: document.getElementById('fontInput'),
       size: document.getElementById('sizeInput'),
@@ -958,7 +1006,7 @@ fetch("https://api.ipify.org?format=json")
         const item = document.createElement('button');
         item.type = 'button';
         item.className = `layer-item${(index === selected || selectedLayers.includes(index)) ? ' active' : ''}`;
-        item.innerHTML = `<span class="layer-name">${escapeHtml(layer.text.split('\n')[0] || 'Dòng trống')}</span><span class="layer-meta">x ${Math.round(layer.x)} · y ${Math.round(layer.y)} · ${layer.size}px</span>`;
+        item.innerHTML = `<span class="layer-index">${index + 1}</span><span class="layer-name">${escapeHtml(layer.text.split('\n')[0] || 'Dòng trống')}</span><span class="layer-meta">x ${Math.round(layer.x)} · y ${Math.round(layer.y)} · ${layer.size}px</span>`;
         item.addEventListener('click', () => {
           selected = index;
           selectedLayers = [];
@@ -985,6 +1033,8 @@ fetch("https://api.ipify.org?format=json")
       refs.bgImageFit.value = state.backgroundImageFit;
       refs.bgImageOpacity.value = Math.round(state.backgroundImageOpacity * 100);
       refs.refOpacity.value = Math.round(state.referenceOpacity * 100);
+      refs.bgImageOpacityValue.textContent = `${refs.bgImageOpacity.value}%`;
+      refs.refOpacityValue.textContent = `${refs.refOpacity.value}%`;
       refs.cleanMode.classList.toggle('active', !state.showReference);
       refs.refMode.classList.toggle('active', state.showReference);
       refs.text.value = layer.text;
@@ -1134,7 +1184,7 @@ fetch("https://api.ipify.org?format=json")
 
     function triggerDownload(blob, filename) {
       if (!blob) {
-        throw new Error('Trinh duyet khong tao duoc tep anh.');
+        throw new Error('Trình duyệt không tạo được tệp ảnh.');
       }
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -1148,7 +1198,7 @@ fetch("https://api.ipify.org?format=json")
 
     function downloadPngBlob(blob, filename) {
       if (!blob) {
-        throw new Error('Trinh duyet khong tao duoc tep anh.');
+        throw new Error('Trình duyệt không tạo được tệp ảnh.');
       }
       if (lastDownloadUrl) {
         URL.revokeObjectURL(lastDownloadUrl);
@@ -1175,7 +1225,7 @@ fetch("https://api.ipify.org?format=json")
               resolve(blob);
               return;
             }
-            reject(new Error('Khong tao duoc PNG bang canvas.toBlob.'));
+            reject(new Error('Không tạo được PNG bằng canvas.toBlob.'));
           }, 'image/png');
           return;
         }
@@ -1210,7 +1260,7 @@ fetch("https://api.ipify.org?format=json")
       reader.onload = () => {
         state.backgroundImage = reader.result;
         loadBackgroundImage(state.backgroundImage);
-        setStatus('Da chen anh nen.');
+        setStatus('Đã chèn ảnh nền.');
         render();
       };
       reader.readAsDataURL(file);
@@ -1220,7 +1270,7 @@ fetch("https://api.ipify.org?format=json")
     refs.clearBgImage.addEventListener('click', () => { saveHistory();
       state.backgroundImage = '';
       loadBackgroundImage('');
-      setStatus('Da xoa anh nen.');
+      setStatus('Đã xóa ảnh nền.');
       render();
     });
 
@@ -1231,6 +1281,7 @@ fetch("https://api.ipify.org?format=json")
 
     refs.bgImageOpacity.addEventListener('input', event => {
       state.backgroundImageOpacity = Number(event.target.value) / 100;
+      refs.bgImageOpacityValue.textContent = `${event.target.value}%`;
       render();
     });
 
@@ -1248,6 +1299,7 @@ fetch("https://api.ipify.org?format=json")
 
     refs.refOpacity.addEventListener('input', event => {
       state.referenceOpacity = Number(event.target.value) / 100;
+      refs.refOpacityValue.textContent = `${event.target.value}%`;
       render();
     });
 
@@ -1302,11 +1354,14 @@ fetch("https://api.ipify.org?format=json")
       setStatus(selectedLayers.length ? 'Đã giãn đều khoảng cách các dòng trong vùng đang chọn.' : 'Đã giãn đều khoảng cách toàn bộ dòng chữ.');
     });
 
-    document.getElementById('undoBtn').addEventListener('click', () => {
-      undoLast();
-    });
+    document.getElementById('undoBtn').addEventListener('click', undoLast);
+    document.getElementById('undoLayerBtn').addEventListener('click', undoLast);
 
-    document.getElementById('undoLayerBtn').addEventListener('click', () => {
+    document.addEventListener('keydown', event => {
+      if (!(event.ctrlKey || event.metaKey) || event.shiftKey || event.key.toLowerCase() !== 'z') return;
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      event.preventDefault();
       undoLast();
     });
 
@@ -1318,26 +1373,30 @@ fetch("https://api.ipify.org?format=json")
       loadBackgroundImage('');
       syncControls();
       render();
+      setStatus('Đã khôi phục mẫu ban đầu.');
     });
 
-    document.getElementById('zoomIn').addEventListener('click', () => {
-      zoom = Math.min(1.6, +(zoom + 0.1).toFixed(2));
-      canvas.style.width = `${Math.round(1180 * zoom)}px`;
+    function setZoom(value) {
+      zoom = value;
+      canvas.style.width = zoom === 1 ? '' : `${Math.round(1180 * zoom)}px`;
       refs.zoomLabel.textContent = `${Math.round(zoom * 100)}%`;
       placeInlineEditor();
+    }
+
+    refs.zoomLabel.addEventListener('click', () => setZoom(1));
+
+    document.getElementById('zoomIn').addEventListener('click', () => {
+      setZoom(Math.min(1.6, +(zoom + 0.1).toFixed(2)));
     });
 
     document.getElementById('zoomOut').addEventListener('click', () => {
-      zoom = Math.max(0.4, +(zoom - 0.1).toFixed(2));
-      canvas.style.width = `${Math.round(1180 * zoom)}px`;
-      refs.zoomLabel.textContent = `${Math.round(zoom * 100)}%`;
-      placeInlineEditor();
+      setZoom(Math.max(0.4, +(zoom - 0.1).toFixed(2)));
     });
 
     document.getElementById('exportPng').addEventListener('click', async () => {
       const button = document.getElementById('exportPng');
       button.disabled = true;
-      setStatus('Dang xuat PNG...');
+      setStatus('Đang xuất PNG...');
       try {
         const exportCanvas = document.createElement('canvas');
         exportCanvas.width = canvas.width;
@@ -1346,9 +1405,9 @@ fetch("https://api.ipify.org?format=json")
         renderTo(exportCtx, false, false);
         const blob = await canvasToBlob(exportCanvas);
         downloadPngBlob(blob, 'maket-hoi-nghi.png');
-        setStatus('Da tao PNG.');
+        setStatus('Đã xuất PNG thành công.');
       } catch (error) {
-        setStatus(`Loi xuat PNG: ${error.message}`);
+        setStatus(`Lỗi xuất PNG: ${error.message}`);
       } finally {
         button.disabled = false;
         render(true);
@@ -1358,13 +1417,24 @@ fetch("https://api.ipify.org?format=json")
     document.getElementById('saveJson').addEventListener('click', () => {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       triggerDownload(blob, 'maket-hoi-nghi.json');
+      setStatus('Đã lưu mẫu JSON.');
     });
 
     document.getElementById('loadJson').addEventListener('click', () => refs.jsonFile.click());
     refs.jsonFile.addEventListener('change', async event => {
       const file = event.target.files[0];
       if (!file) return;
-      state = JSON.parse(await file.text());
+      refs.jsonFile.value = '';
+      let loaded;
+      try {
+        loaded = JSON.parse(await file.text());
+        if (!loaded || !Array.isArray(loaded.layers) || !loaded.layers.length) throw new Error();
+      } catch (error) {
+        setStatus('Tệp JSON không hợp lệ.');
+        return;
+      }
+      saveHistory();
+      state = loaded;
       selected = 0;
       selectedLayers = [];
       state.backgroundImage = state.backgroundImage || '';
@@ -1373,7 +1443,7 @@ fetch("https://api.ipify.org?format=json")
       loadBackgroundImage(state.backgroundImage);
       syncControls();
       render();
-      refs.jsonFile.value = '';
+      setStatus(`Đã mở mẫu: ${file.name}`);
     });
 
     canvas.addEventListener('pointerdown', event => {
@@ -1477,62 +1547,6 @@ fetch("https://api.ipify.org?format=json")
     baseImage.onload = () => render();
     syncControls();
     render();
-    function updateClockWeather() {
-      const now = new Date();
-      const time = now.toLocaleTimeString('vi-VN');
-      const date = now.toLocaleDateString('vi-VN');
-
-      // Có thể thay bằng API thời tiết thực nếu muốn
-      const temperature = "28°C";
-      const weather = "🌤 Nắng nhẹ";
-
-      const el = document.getElementById('clockWeather');
-      if(el){
-        el.innerHTML = `🕒 ${time} | 📅 ${date} | ${weather} | 🌡 ${temperature}`;
-      }
-    }
-
-    setInterval(updateClockWeather,1000);
-    updateClockWeather();
-
-
   </script>
-
-
-<script>
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-try{
-  firebase.initializeApp(firebaseConfig);
-
-  const db = firebase.database();
-  const userId = Date.now() + "_" + Math.random().toString(36).substring(2,8);
-
-  const userRef = db.ref("onlineUsers/" + userId);
-
-  userRef.set({
-      joined: Date.now()
-  });
-
-  userRef.onDisconnect().remove();
-
-  db.ref("onlineUsers").on("value", snapshot => {
-      const count = snapshot.numChildren();
-      document.getElementById("onlineCounter").innerHTML =
-          "👥 Online: " + count;
-  });
-}catch(e){
-  console.log("Firebase chưa được cấu hình:", e);
-}
-</script>
-
 </body>
 </html>
